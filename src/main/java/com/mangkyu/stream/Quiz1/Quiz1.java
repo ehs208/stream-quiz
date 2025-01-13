@@ -30,7 +30,16 @@ public class Quiz1 {
     public Map<String, Integer> quiz2() throws IOException {
         List<String[]> csvLines = readCsvLines();
 
-        return new HashMap<>();
+        Map<String, Integer> JungStream = csvLines.stream()
+            .filter(line -> line[0].startsWith("정"))
+            .map(line -> line[1])
+            .flatMap(hobbies -> Arrays.stream(hobbies.split(":")))
+            .collect(Collectors.groupingBy(
+                hobby -> hobby.trim(),
+                Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
+            ));
+
+        return JungStream;
     }
 
     // 1.3 소개 내용에 '좋아'가 몇번 등장하는지 계산하여라.
