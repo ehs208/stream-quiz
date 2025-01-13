@@ -45,8 +45,13 @@ public class Quiz1 {
     // 1.3 소개 내용에 '좋아'가 몇번 등장하는지 계산하여라.
     public int quiz3() throws IOException {
         List<String[]> csvLines = readCsvLines();
-        return 0;
+
+        return csvLines.stream()
+            .map(line -> line[2])  // 소개 컬럼 선택
+            .mapToInt(intro -> intro.split("좋아").length - 1)  // 각 라인의 "좋아" 개수 계산
+            .sum();  // 전체 개수 합계
     }
+
 
     private List<String[]> readCsvLines() throws IOException {
         CSVReader csvReader = new CSVReader(new FileReader(getClass().getResource("/user.csv").getFile()));
